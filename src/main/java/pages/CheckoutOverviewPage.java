@@ -18,11 +18,11 @@ public class CheckoutOverviewPage extends BasePage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(chekoutSummaryLocator));
     }
     public HomePage cancelCheckOut(){
-        getWebElement(cancelLocator);
+        clickOnElement(cancelLocator);
         return new HomePage(driver);
     }
     public CheckoutCompletePage clickFinis(){
-        getWebElement(finishLocator).click();
+        clickOnElement(finishLocator);
         return new CheckoutCompletePage(driver);
     }
     public boolean verifyCheckOutOverview() {

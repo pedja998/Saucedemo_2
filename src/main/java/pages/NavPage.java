@@ -16,18 +16,12 @@ public class NavPage extends BasePage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.className("bm-item-list")));
     }
     public HomePage closeMenu(){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(exitLocator));
-        WebElement burgerExit = driver.findElement(exitLocator);
-        burgerExit.click();
+        clickOnElement(exitLocator);
         return new HomePage(driver);
     }
-    private List<WebElement> getBmItemNameList(){
+    public WebElement getWantedBmItem(String name){
         wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//a[contains(@class,\"bm-item\")]")));
         List<WebElement> bmItemList = driver.findElements(By.xpath("//a[contains(@class,\"bm-item\")]"));
-        return bmItemList;
-    }
-    public WebElement getWantedBmItem(String name){
-        List <WebElement> bmItemList = getBmItemNameList();
         for (WebElement element : bmItemList){
             if (element.getText().contains(name))
                 return element;
@@ -35,7 +29,7 @@ public class NavPage extends BasePage {
         return null;
     }
     public LoginPage clickLogout(){
-        getWebElement(logoutLocator).click();
+        clickOnElement(logoutLocator);
         return new LoginPage(driver);
     }
 }
