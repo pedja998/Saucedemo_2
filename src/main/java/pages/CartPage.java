@@ -18,21 +18,18 @@ public class CartPage extends BasePage {
         super(driver);
         wait.until(ExpectedConditions.visibilityOfElementLocated(titleLocator));
     }
+    //Za slučaj proverer da li se poklapaju izabrani artikli sa artiklima u korpi
     public List<WebElement> getItemsInCart(){
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(@id, \"title_link\")]")));
         List<WebElement> itemsInCart = driver.findElements(By.xpath("//a[contains(@id, \"title_link\")]"));
         return itemsInCart;
     }
     public HomePage clickContinueShoppingButton(){
-        wait.until(ExpectedConditions.elementToBeClickable(continueShoppingLocator));
-        WebElement continueDugme = driver.findElement(continueShoppingLocator);
-        continueDugme.click();
+        clickOnElement(continueShoppingLocator);
         return new HomePage(driver);
     }
     public CheckOutPage clickCheckOutButton(){
-        wait.until(ExpectedConditions.elementToBeClickable(checkOutLocator));
-        WebElement checkOutDugme = driver.findElement(checkOutLocator);
-        checkOutDugme.click();
+        clickOnElement(checkOutLocator);
         return new CheckOutPage(driver);
     }
     public boolean verifyCartPage() {

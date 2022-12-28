@@ -1,6 +1,7 @@
 package tests.login;
 
 import data.CommonStrings;
+import data.Time;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
@@ -8,6 +9,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import pages.*;
 import tests.BaseTest;
+
+import java.io.FileReader;
+import java.io.IOException;
 
 public class GoodLoginAndCheckOut extends BaseTest {
     private WebDriver driver;
@@ -18,10 +22,12 @@ public class GoodLoginAndCheckOut extends BaseTest {
     private String postalCode;
     private int numberOfItems;
     @BeforeMethod
-    public void setUpTest(){
+    public void setUpTest() throws IOException {
+        fileReader=new FileReader("C:\\Users\\User\\Desktop\\Comtrade\\ProbaNeka\\Saucedemo_2\\src\\main\\java\\data\\Page.properties");
+        properties.load(fileReader);
         driver = setUpDriver();
-        username = CommonStrings.STANDARD_USERNAME;
-        password = CommonStrings.PASSWORD;
+        username = properties.getProperty("korisnicko");
+        password = properties.getProperty("sifra");
         firstName=CommonStrings.FIRST_NAME;
         lastName=CommonStrings.LAST_NAME;
         postalCode=CommonStrings.POSTAL_CODE;
@@ -36,16 +42,17 @@ public class GoodLoginAndCheckOut extends BaseTest {
         Assert.assertTrue(homePage.verifyHomePage(),"Nije dobar url");
 
         //Provera title, social, cartIcon
-        Assert.assertTrue(homePage.getWebElement(homePage.titleLocator).isDisplayed(),"PRODUCTS NIJE PRIKAZAN");
-        Assert.assertTrue(homePage.getWebElement(homePage.socialsLocator).isDisplayed(),"NEMA SOCIAL LINKOVA");
-        Assert.assertTrue(homePage.getWebElement(homePage.cartIconLocator).isDisplayed(),"NEMA CART IKONE");
+        Assert.assertTrue(homePage.verifyElement(homePage.titleLocator, Time.TIME_SHORTER),"PRODUCTS NIJE PRIKAZAN");
+        Assert.assertTrue(homePage.verifyElement(homePage.socialsLocator, Time.TIME_SHORTER),"NEMA SOCIAL LINKOVA");
+        Assert.assertTrue(homePage.verifyElement(homePage.cartIconLocator,Time.TIME_SHORTER),"NEMA CART IKONE");
+
 
         //Ulazim u burger meni i proveravam da li postoji LOGOUT
         NavPage burgerMenu = homePage.clickBurgerButton();
-        Assert.assertTrue(burgerMenu.getWantedBmItem("LOGOUT").isDisplayed(),"NEMA LOGOUT ITEM-a");
+        Assert.assertTrue(burgerMenu.verifyElement(burgerMenu.getWantedBmItem("LOGOUT")),"NEMA LOGOUT-a");
 
         //Vraćam se na HomePage pritiskom na x u burger meniju, proveravam da li je dobar URL
-        HomePage homePage1 = burgerMenu.closeMenu();
+        homePage = burgerMenu.closeMenu();
         Assert.assertTrue(homePage.verifyHomePage(),"Nije dobar url");
     }
 
@@ -62,9 +69,10 @@ public class GoodLoginAndCheckOut extends BaseTest {
         Assert.assertTrue(productDetailsPage.verifyDetailsPage(),"Nije dobar url!");
         productDetailsPage.clickAddToCart(); //U metodi sam proverio da li je promenjen tekst dugmeta nakon klika
         numberOfItems++;
-        Assert.assertTrue(productDetailsPage.getWebElement(productDetailsPage.titleLocator).isDisplayed(),"NIJE PRIKAZAN TITLE");
-        Assert.assertTrue(productDetailsPage.getWebElement(productDetailsPage.detailsLocator).isDisplayed(),"NIJE PRIKAZAN DETAILS");
-        Assert.assertTrue(productDetailsPage.getWebElement(productDetailsPage.priceLocator).isDisplayed(),"NIJE PRIKAZANA CENA");
+
+        Assert.assertTrue(productDetailsPage.verifyElement(productDetailsPage.titleLocator,3),"NIJE PRIKAZAN TITLE");
+        Assert.assertTrue(productDetailsPage.verifyElement(productDetailsPage.detailsLocator,3),"NIJE PRIKAZAN DETAILS");
+        Assert.assertTrue(productDetailsPage.verifyElement(productDetailsPage.priceLocator,3),"NIJE PRIKAZANA CENA");
 
         //Klikom idem na home page i klik addToCart Fleece Jacket
         homePage = productDetailsPage.clickBackToProducts();

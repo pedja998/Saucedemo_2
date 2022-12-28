@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CheckOutPage extends BasePage {
     private final String checkOutPageURL= CommonStrings.CHECK_OUT_STEP_ONE;
-    private final By checkoutTitleLocator = By.xpath("//*[@id=\"header_container\"]/div[2]/span");
+    private final By checkoutTitleLocator = By.xpath("//span[contains(@class,\"title\")]");
     private final By firstNameLocator = By.id("first-name");
     private final By lastNameLocator = By.id("last-name");
     private final By postalCodeLocator = By.id("postal-code");
@@ -22,34 +22,23 @@ public class CheckOutPage extends BasePage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(checkoutTitleLocator));
     }
     private CheckOutPage setFirstName(String firstName){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(firstNameLocator));
-        WebElement firstNameField=driver.findElement(firstNameLocator);
-        firstNameField.clear();
-        firstNameField.sendKeys(firstName);
+        clearAndType(waitToBeVisible(firstNameLocator,Time.TIME_SHORTER),firstName);
         return this;
     }
-    private CheckOutPage setLastName(String firstName){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(lastNameLocator));
-        WebElement lastNameField=driver.findElement(lastNameLocator);
-        lastNameField.clear();
-        lastNameField.sendKeys(firstName);
+    private CheckOutPage setLastName(String lastName){
+        clearAndType(waitToBeVisible(lastNameLocator,Time.TIME_SHORTER),lastName);
         return this;
     }
     private CheckOutPage setPostalCode(String code){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(postalCodeLocator));
-        WebElement postalCodeField = driver.findElement(postalCodeLocator);
-        postalCodeField.clear();
-        postalCodeField.sendKeys(code);
+        clearAndType(waitToBeVisible(postalCodeLocator,Time.TIME_SHORTER),code);
         return this;
     }
     public CartPage cancelCheckOut(){
-        WebElement cancelButton = driver.findElement(cancelBtnLocator);
-        cancelButton.click();
+        clickOnElement(cancelBtnLocator);
         return new CartPage(driver);
     }
     private CheckoutOverviewPage clickContinue(){
-        WebElement continueDugme = driver.findElement(continueBtnLocator);
-        continueDugme.click();
+        clickOnElement(continueBtnLocator);
         return new CheckoutOverviewPage(driver);
     }
     public CheckoutOverviewPage proceedCheckOut(String firstName, String lastName, String code){

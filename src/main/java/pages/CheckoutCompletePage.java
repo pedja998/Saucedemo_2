@@ -17,9 +17,7 @@ public class CheckoutCompletePage extends BasePage {
         wait.until(ExpectedConditions.visibilityOfElementLocated(checkoutContainerLocator));
     }
     public HomePage clickBackHome(){
-        wait.until(ExpectedConditions.elementToBeClickable(backHomeBtnLocator));
-        WebElement backHomeBtn = driver.findElement(backHomeBtnLocator);
-        backHomeBtn.click();
+        clickOnElement(backHomeBtnLocator);
         return new HomePage(driver);
     }
     public boolean verifyCompletePage() {

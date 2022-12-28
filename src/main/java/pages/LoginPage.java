@@ -30,24 +30,17 @@ public class LoginPage extends BasePage {
         clicLogin();
         return new HomePage(driver);
     }
+    //Privatna metoda, neće biti dostupna u testu, samo je jedna public
     private LoginPage setUsername(String username){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(usernameLocator));
-        WebElement usernameField=driver.findElement(usernameLocator);
-        usernameField.clear();
-        usernameField.sendKeys(username);
+        clearAndType(getWebElement(usernameLocator),username);
         return this;
     }
     private LoginPage setPassword(String password){
-        wait.until(ExpectedConditions.visibilityOfElementLocated(passwordLocator));
-        WebElement passwordField=driver.findElement(passwordLocator);
-        passwordField.clear();
-        passwordField.sendKeys(password);
+        clearAndType(getWebElement(passwordLocator),password);
         return this;
     }
     private HomePage clicLogin(){
-        wait.until(ExpectedConditions.elementToBeClickable(loginButtonLocator));
-        WebElement loginBtn=driver.findElement(loginButtonLocator);
-        loginBtn.click();
+        clickOnElement(loginButtonLocator);
         return new HomePage(driver);
     }
 }

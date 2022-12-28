@@ -45,8 +45,41 @@ public class BasePage {
         WebElement element = driver.findElement(locator);
         return element;
     }
+    public WebElement waitToBeVisible(By lokator, int timeout){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        return wait.until(ExpectedConditions.visibilityOfElementLocated(lokator));
+    }
+    public WebElement waitToBeVisible(WebElement element, int timeout){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(timeout));
+        return wait.until(ExpectedConditions.visibilityOf(element));
+    }
+    public void typeText(WebElement element, String text){
+        waitToBeVisible(element, Time.TIME_SHORTER);
+        element.sendKeys(text);
+    }
+    public void clearText(WebElement element){
+        waitToBeVisible(element, Time.TIME_SHORTER);
+        element.clear();
+    }
+    public void clearAndType(WebElement element, String text){
+        clearText(element);
+        typeText(element,text);
+    }
+    public void clickOnElement(By lokator){
+        WebElement element = waitToBeVisible(lokator,Time.TIME_SHORTER);
+        element.click();
+    }
+    public void clickOnElement(WebElement element){
+        element.click();
+    }
     public int convertToInt(String text){
         int i=Integer.parseInt(text);
         return i;
+    }
+    public boolean verifyElement(By lokator, int timeout){
+        return waitToBeVisible(lokator,timeout).isDisplayed();
+    }
+    public boolean verifyElement(WebElement element){
+        return element.isDisplayed();
     }
 }
